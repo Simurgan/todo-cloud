@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 100px;
+  font-weight: 500;
+
+  h1,
+  h2,
+  h3,
+  span,
+  p,
+  div {
+    &.text-extrabold {
+      font-weight: 800;
+    }
+
+    &.text-bold {
+      font-weight: 600;
+    }
+
+    &.text-normal {
+      font-weight: 500;
+    }
+
+    &.text-thin {
+      font-weight: 400;
+    }
+
+    &.text-extrathin {
+      font-weight: 200;
+    }
+  }
+
+  h1 {
+    font-size: 0.64rem;
+  }
+
+  h2 {
+    font-size: 0.48rem;
+  }
+
+  h3 {
+    font-size: 0.32rem;
+  }
+
+  p,
+  span,
+  div {
+    font-size: 0.2rem;
+  }
+}
