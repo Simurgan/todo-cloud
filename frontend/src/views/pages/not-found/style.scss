@@ -1,0 +1,19 @@
+section.not-found-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.48rem;
+
+    .text-container {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 50%;
+    }
+  }
+}
