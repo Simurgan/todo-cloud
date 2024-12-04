@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 import { Urls } from "../../../models/router";
 import {
@@ -10,11 +10,17 @@ import {
   Validate,
 } from "vanora-react";
 import Button from "../../components/button";
+import { useStore } from "../../../store/store";
+import { UserModel } from "../../../models/auth";
 
 const LoginPage = () => {
   const loginForm = useForm();
+  const setUser = useStore((x) => x.setUser);
+  const navigate = useNavigate();
   const loginFormSubmitHandler = async () => {
-    console.log("login form submitted!!");
+    const user: UserModel = { Email: loginForm.get("Email")?.value as string };
+    setUser(user);
+    navigate(Urls.Home);
   };
 
   return (
