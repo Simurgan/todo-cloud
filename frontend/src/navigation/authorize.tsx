@@ -1,11 +1,21 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useStore } from "../store/store";
 import { Urls } from "../models/router";
+import { localStorageHelper } from "../helpers/global";
+import { getUserIdentity } from "../actions/account";
+import { useEffect } from "react";
 
 const Authorize = () => {
-  const user = useStore((x) => x.user);
+  const checkUser = async () => {
+    await getUserIdentity();
+  };
 
-  if (user) {
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const refreshToken = localStorageHelper.get("refresh_token");
+
+  if (refreshToken) {
     return <Outlet />;
   }
 

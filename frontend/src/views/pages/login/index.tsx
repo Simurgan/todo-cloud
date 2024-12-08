@@ -10,17 +10,21 @@ import {
   Validate,
 } from "vanora-react";
 import Button from "../../components/button";
-import { useStore } from "../../../store/store";
-import { UserModel } from "../../../models/auth";
+import { login } from "../../../actions/auth";
 
 const LoginPage = () => {
   const loginForm = useForm();
-  const setUser = useStore((x) => x.setUser);
   const navigate = useNavigate();
+
   const loginFormSubmitHandler = async () => {
-    const user: UserModel = { Email: loginForm.get("Email")?.value as string };
-    setUser(user);
-    navigate(Urls.Home);
+    const formData = await loginForm.getAllJson();
+    const response = await login(formData);
+
+    if (response.status === 200) {
+      navigate(Urls.Home);
+    } else {
+      window.alert("Try again.");
+    }
   };
 
   return (
@@ -41,7 +45,7 @@ const LoginPage = () => {
               classNames="form login-form"
             >
               <InputEmail
-                name="Email"
+                name="username"
                 placeholder="Email"
                 permissions={[Permit.OnlyEmail()]}
                 validations={[
@@ -50,7 +54,7 @@ const LoginPage = () => {
                 ]}
               />
               <InputPassword
-                name="Password"
+                name="password"
                 placeholder="Password"
                 permissions={[Permit.MaxLength(20)]}
                 validations={[Validate.Required("Password is required")]}
