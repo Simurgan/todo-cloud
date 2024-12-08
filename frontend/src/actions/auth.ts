@@ -1,5 +1,6 @@
 import { localStorageHelper } from "../helpers/global";
 import { SignupLoginDataModel } from "../models/auth";
+import { useStore } from "../store/store";
 import { api } from "./api";
 
 const authApi = api.create({
@@ -49,12 +50,11 @@ export const logout = async () => {
       data: { refresh_token: refresh_token },
     });
 
-    if (response.status === 205) {
-      localStorageHelper.delete("refresh_token");
-      localStorageHelper.delete("access_token");
-      localStorageHelper.delete("refresh_token_expires_at");
-      localStorageHelper.delete("access_token_expires_at");
-    }
+    localStorageHelper.delete("refresh_token");
+    localStorageHelper.delete("access_token");
+    localStorageHelper.delete("refresh_token_expires_at");
+    localStorageHelper.delete("access_token_expires_at");
+    useStore.getState().setUser(undefined);
 
     return response;
   }

@@ -1,14 +1,28 @@
 import "./style.scss";
 import logoutSvg from "../../../assets/icons/logout.svg";
-import { useStore } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Urls } from "../../../models/router";
+import { logout } from "../../../actions/auth";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const HomePage = () => {
-  const setUser = useStore((x) => x.setUser);
   const navigate = useNavigate();
-  const logoutHandler = () => {
-    setUser();
+
+  const logoutHandler = async () => {
+    try {
+      const response = await logout();
+      if (response?.status === 205) {
+        toast.success("Logged out successfully");
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.status === 400) {
+        toast.error("Token is already expired");
+      } else {
+        toast.error("Something went wrong with the login!");
+      }
+    }
     navigate(Urls.Login);
   };
 
