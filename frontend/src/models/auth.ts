@@ -1,5 +1,8 @@
 export type UserModel = {
-  FirstName: string;
-  LastName: string;
   Email: string;
+};
+
+export type SignupLoginDataModel = {
+  email: string;
+  password: string;
 };

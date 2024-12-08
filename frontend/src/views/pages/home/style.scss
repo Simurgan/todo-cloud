@@ -1,0 +1,25 @@
+section.home-section {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .content {
+      .title-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 0.32rem;
+
+        .logout-icon-container {
+          width: 0.48rem;
+          cursor: pointer;
+
+          .logout-icon {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

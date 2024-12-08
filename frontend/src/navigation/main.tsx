@@ -5,6 +5,7 @@ import Guest from "./guest";
 import LoginPage from "../views/pages/login";
 import HomePage from "../views/pages/home";
 import NotFoundPage from "../views/pages/not-found";
+import SignupPage from "../views/pages/signup";
 
 const MainRouter = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
       </Route>
       <Route element={<Guest />}>
         <Route element={<LoginPage />} path={Urls.Login} />
+        <Route element={<SignupPage />} path={Urls.Signup} />
       </Route>
       <Route element={<NotFoundPage />} path="*" />
     </Routes>
