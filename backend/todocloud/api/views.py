@@ -27,6 +27,12 @@ class LogoutView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+class UserIdentityView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"email": request.user.email}, status=status.HTTP_200_OK)
+        
 class TodoItemListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
