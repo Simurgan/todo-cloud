@@ -1,5 +1,5 @@
 export type UserModel = {
-  Email: string;
+  email: string;
 };
 
 export type SignupLoginDataModel = {

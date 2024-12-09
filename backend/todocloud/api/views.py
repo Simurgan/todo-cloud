@@ -39,7 +39,7 @@ class TodoItemListCreateView(APIView):
 
     def get(self, request):
         # Fetch all TodoItems belonging to the logged-in user
-        todo_items = TodoItem.objects.filter(owner=request.user).order_by('order')
+        todo_items = TodoItem.objects.filter(owner=request.user).order_by("-created_at")
         serializer = TodoItemSerializer(todo_items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
