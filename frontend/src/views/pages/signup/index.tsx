@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 import { Urls } from "../../../models/router";
 import {
@@ -10,11 +10,32 @@ import {
   Validate,
 } from "vanora-react";
 import Button from "../../components/button";
+import { signup } from "../../../actions/auth";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const SignupPage = () => {
   const signupForm = useForm();
+  const navigate = useNavigate();
+
   const signupFormSubmitHandler = async () => {
-    console.log("signup form submitted!!");
+    try {
+      const formData = await signupForm.getAllJson();
+      const response = await signup(formData); // axios call
+
+      if (response.status === 201) {
+        toast.success("Account created successfully!");
+        navigate(Urls.Login);
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.status === 400) {
+        toast.error("This email is used by another user. Try another one.");
+      } else {
+        // Network errors or unexpected failures
+        toast.error("Something went wrong. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -34,7 +55,7 @@ const SignupPage = () => {
               classNames="form signup-form"
             >
               <InputEmail
-                name="Email"
+                name="email"
                 placeholder="Email"
                 permissions={[Permit.OnlyEmail()]}
                 validations={[
@@ -43,7 +64,7 @@ const SignupPage = () => {
                 ]}
               />
               <InputPassword
-                name="Password"
+                name="password"
                 placeholder="Password"
                 permissions={[Permit.MaxLength(20)]}
                 validations={[Validate.Required("Password is required")]}

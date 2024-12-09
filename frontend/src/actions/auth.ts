@@ -1,5 +1,6 @@
 import { localStorageHelper } from "../helpers/global";
 import { SignupLoginDataModel } from "../models/auth";
+import { useStore } from "../store/store";
 import { api } from "./api";
 
 const authApi = api.create({
@@ -26,6 +27,14 @@ export const login = async (data: SignupLoginDataModel) => {
   if (response.status === 200) {
     localStorageHelper.set("refresh_token", response.data.refresh);
     localStorageHelper.set("access_token", response.data.access);
+    localStorageHelper.set(
+      "refresh_token_expires_at",
+      response.data.refresh_expires_at
+    );
+    localStorageHelper.set(
+      "access_token_expires_at",
+      response.data.access_expires_at
+    );
   }
 
   return response;
@@ -41,10 +50,11 @@ export const logout = async () => {
       data: { refresh_token: refresh_token },
     });
 
-    if (response.status === 205) {
-      localStorageHelper.delete("refresh_token");
-      localStorageHelper.delete("access_token");
-    }
+    localStorageHelper.delete("refresh_token");
+    localStorageHelper.delete("access_token");
+    localStorageHelper.delete("refresh_token_expires_at");
+    localStorageHelper.delete("access_token_expires_at");
+    useStore.getState().setUser(undefined);
 
     return response;
   }
@@ -62,9 +72,15 @@ export const refresh = async () => {
 
     if (response.status === 200) {
       localStorageHelper.set("access_token", response.data.access);
+      localStorageHelper.set(
+        "access_token_expires_at",
+        response.data.access_expires_at
+      );
     } else {
       localStorageHelper.delete("access_token");
       localStorageHelper.delete("refresh_token");
+      localStorageHelper.delete("refresh_token_expires_at");
+      localStorageHelper.delete("access_token_expires_at");
     }
 
     return response;

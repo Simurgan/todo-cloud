@@ -7,7 +7,8 @@ from .serializers import TodoItemSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSignupSerializer
-from datetime import datetime, timezone
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .serializers import CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer
 
 class SignupView(APIView):
     def post(self, request):
@@ -38,7 +39,7 @@ class TodoItemListCreateView(APIView):
 
     def get(self, request):
         # Fetch all TodoItems belonging to the logged-in user
-        todo_items = TodoItem.objects.filter(owner=request.user).order_by('order')
+        todo_items = TodoItem.objects.filter(owner=request.user).order_by("-created_at")
         serializer = TodoItemSerializer(todo_items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -77,3 +78,11 @@ class TodoItemDetailView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Custom view for /auth/token/
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+# Custom view for /auth/token/refresh/
+class CustomTokenRefreshView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer

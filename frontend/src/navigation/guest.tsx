@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useStore } from "../store/store";
 import { Urls } from "../models/router";
+import { localStorageHelper } from "../helpers/global";
 
 const Guest = () => {
-  const user = useStore((x) => x.user);
+  const refreshToken = localStorageHelper.get("refresh_token");
 
-  if (!user) {
+  if (!refreshToken) {
     return <Outlet />;
   }
 
