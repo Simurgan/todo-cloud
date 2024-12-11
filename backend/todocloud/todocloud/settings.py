@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+from google.oauth2 import service_account
 
 # Load environment variables from .env file
 load_dotenv()
@@ -44,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'database',
     'api',
-    'corsheaders'
+    'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -133,8 +136,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-from datetime import timedelta
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -143,3 +144,28 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+STATICFILES_STORAGE = None
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "OPTIONS": {
+          "bucket_name": "todo-cloud-bucket",
+          "file_overwrite": False,
+          "credentials": service_account.Credentials.from_service_account_file(
+                os.path.join(BASE_DIR, os.environ.get("GCP_KEY_PATH"))
+          ),
+          "expiration": timedelta(minutes=3),
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+#     os.path.join(BASE_DIR, os.environ.get("GCP_KEY_PATH"))
+# )
+
+# GS_EXPIRATION = timedelta(minutes=3)

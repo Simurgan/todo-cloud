@@ -1,3 +1,4 @@
 localenv/
 **/__pycache__/**
 **/.env*
+**/secrets/
