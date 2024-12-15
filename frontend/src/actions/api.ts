@@ -1,5 +1,13 @@
 import axios from "axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL + "api/";
+// Dynamically set backend URL
+const backendUrl =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_BACKEND_URL // Use local backend during development
+    : window.__ENV__?.VITE_BACKEND_URL ?? "__VITE_BACKEND_URL__";
+
+console.log(backendUrl);
+
+axios.defaults.baseURL = `${backendUrl}api/`;
 
 export const api = axios;

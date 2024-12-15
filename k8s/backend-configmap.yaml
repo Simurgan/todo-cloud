@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  DEBUG: "False"
+  DJANGO_ALLOWED_HOSTS: "*"
+  STORAGE_BUCKET_NAME: "todo-cloud-bucket"
+  GCP_KEY_PATH: "secrets/gcp-key.json"
