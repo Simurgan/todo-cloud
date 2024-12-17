@@ -2,10 +2,10 @@
 FROM node:22.11.0-alpine AS build
 WORKDIR /app
 
-# Install dependencies and build the app
-COPY package.json package-lock.json ./
-RUN npm install --omit=dev
 COPY . .
+
+# Install dependencies and build the app
+RUN npm install
 RUN npm run build
 
 # Stage 2: Serve static files using NGINX
