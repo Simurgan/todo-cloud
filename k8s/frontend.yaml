@@ -18,11 +18,12 @@ spec:
         - name: todo-frontend
           image: simurgan/todo-frontend:latest #change here
           env:
-            - name: VITE_BACKEND_URL
+            - name: HOST_IP
               valueFrom:
-                configMapKeyRef:
-                  name: frontend-config
-                  key: VITE_BACKEND_URL
+                fieldRef:
+                  fieldPath: status.HOST_IP
+            - name: BACKEND_PORT
+              value: "30200"
           ports:
             - containerPort: 80
 ---
