@@ -54,6 +54,24 @@ spec:
             - name: gcp-key-volume
               mountPath: /app/secrets
               readOnly: true
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:latest
+          command:
+            [
+              "/cloud_sql_proxy",
+              "-instances=$(INSTANCE_CONNECTION)=tcp:5432",
+              "-credential_file=/secrets/cloudsql/gcp-key.json",
+            ]
+          env:
+            - name: INSTANCE_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudsql-config
+                  key: INSTANCE_CONNECTION
+          volumeMounts:
+            - name: gcp-key-volume
+              mountPath: /secrets/cloudsql
+              readOnly: true
       volumes:
         - name: gcp-key-volume
           secret:
