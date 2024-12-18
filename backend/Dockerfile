@@ -35,9 +35,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app /app
 
 # Set environment variables that don't contain secrets
-ENV DJANGO_SETTINGS_MODULE=todocloud.settings
+ENV DJANGO_SETTINGS_MODULE=backend.settings
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Run the Django app with gunicorn by default
-CMD ["gunicorn", "todocloud.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
