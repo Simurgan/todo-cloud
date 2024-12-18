@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a$rplsb@i$fb3xk@+w^g(agfk1@v&rd5#5)im22n%0z*(v5o7&'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('IS_DEBUG_MODE', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ.get('DJANGO_ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -147,7 +147,7 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
         "OPTIONS": {
-          "bucket_name": "todo-cloud-bucket",
+          "bucket_name": os.environ.get("STORAGE_BUCKET_NAME"),
           "file_overwrite": False,
           "credentials": service_account.Credentials.from_service_account_file(
                 os.path.join(BASE_DIR, os.environ.get("GCP_KEY_PATH"))
@@ -159,9 +159,3 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
-# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-#     os.path.join(BASE_DIR, os.environ.get("GCP_KEY_PATH"))
-# )
-
-# GS_EXPIRATION = timedelta(minutes=3)
