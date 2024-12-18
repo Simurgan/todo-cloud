@@ -20,11 +20,11 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: GCP_KEY_PATH
+            - name: SECRET_KEY
               valueFrom:
-                configMapKeyRef:
-                  name: backend-config
-                  key: GCP_KEY_PATH
+                secretKeyRef:
+                  name: django-secrets
+                  key: django-secret-key
             - name: DATABASE_NAME
               valueFrom:
                 secretKeyRef:
@@ -50,6 +50,14 @@ spec:
                 secretKeyRef:
                   name: django-secrets
                   key: db-port
+            - name: GCP_KEY_PATH
+              value: "secrets/gcp-key.json"
+            - name: STORAGE_BUCKET_NAME
+              value: "todo-cloud-bucket"
+            - name: DJANGO_ALLOWED_HOSTS
+              value: "*"
+            - name: IS_DEBUG_MODE
+              value: "False"
           volumeMounts:
             - name: gcp-key-volume
               mountPath: /app/secrets
@@ -67,7 +75,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: cloudsql-config
-                  key: INSTANCE_CONNECTION
+                  key: instance-connection
           volumeMounts:
             - name: gcp-key-volume
               mountPath: /secrets/cloudsql
@@ -85,11 +93,10 @@ kind: Service
 metadata:
   name: backend-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: backend
   ports:
     - protocol: TCP
       port: 8000
       targetPort: 8000
-      nodePort: 30200

@@ -16,14 +16,12 @@ spec:
     spec:
       containers:
         - name: todo-frontend
-          image: simurgan/todo-frontend:latest #change here
+          image: simurgan/todo-frontend:latest
           env:
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+            - name: BACKEND_IP
+              value: "<backend ip here after backend deploy>" # change here after backend deploy and before frontend deploy
             - name: BACKEND_PORT
-              value: "30200"
+              value: "8000"
           ports:
             - containerPort: 80
 ---
@@ -32,11 +30,10 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: frontend
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30100
