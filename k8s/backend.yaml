@@ -63,7 +63,7 @@ spec:
               mountPath: /app/secrets
               readOnly: true
         - name: cloud-sql-proxy
-          image: gcr.io/cloudsql-docker/gce-proxy:latest
+          image: gcr.io/cloudsql-docker/gce-proxy:1.33.1
           command:
             [
               "/cloud_sql_proxy",
@@ -75,7 +75,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: cloudsql-config
-                  key: instance-connection
+                  key: INSTANCE_CONNECTION
           volumeMounts:
             - name: gcp-key-volume
               mountPath: /secrets/cloudsql

@@ -19,7 +19,7 @@ spec:
           image: simurgan/todo-frontend:latest
           env:
             - name: BACKEND_IP
-              value: "<backend ip here after backend deploy>" # change here after backend deploy and before frontend deploy
+              value: "<backend-ip here>" # change here after backend deploy and before frontend deploy
             - name: BACKEND_PORT
               value: "8000"
           ports:
