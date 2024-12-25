@@ -17,9 +17,16 @@ spec:
       containers:
         - name: todo-frontend
           image: simurgan/todo-frontend:latest
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "100m"
+            limits:
+              memory: "60Mi"
+              cpu: "120m"
           env:
             - name: BACKEND_IP
-              value: "<backend-ip here>" # change here after backend deploy and before frontend deploy
+              value: "<backend-url>" # change here after backend deploy and before frontend deploy
             - name: BACKEND_PORT
               value: "8000"
           ports:
