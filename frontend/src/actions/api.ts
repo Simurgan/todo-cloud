@@ -1,5 +1,11 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = process.env.BACKEND_URL + "api/";
-axios.defaults.baseURL = "http://127.0.0.1:8000/" + "api/";
+// Dynamically set backend URL
+const backendUrl =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_BACKEND_URL // Use local backend during development
+    : window.__ENV__?.VITE_BACKEND_URL ?? "__VITE_BACKEND_URL__";
+
+axios.defaults.baseURL = `${backendUrl}api/`;
+
 export const api = axios;
